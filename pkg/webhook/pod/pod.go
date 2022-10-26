@@ -74,28 +74,28 @@ func (a *podAnnotator) Handle(ctx context.Context, req admission.Request) admiss
 	return patchPodChanges(originalPod, pod)
 }
 
-// create jsonpatches only to changed caused by the kubemacpool webhook changes
+// create jsonpatches only to changed caused by the kubeipfixed webhook changes
 func patchPodChanges(originalPod, currentPod *corev1.Pod) admission.Response {
-	kubemapcoolJsonPatches := []jsonpatch.Operation{}
+	kubeIPJsonPatches := []jsonpatch.Operation{}
 
 	currentNetworkAnnotation := currentPod.GetAnnotations()[ip_manager.NetworksAnnotation]
 	originalPodNetworkAnnotation := originalPod.GetAnnotations()[ip_manager.NetworksAnnotation]
 	if originalPodNetworkAnnotation != currentNetworkAnnotation {
 		annotationPatch := jsonpatch.NewOperation("replace", "/metadata/annotations", currentPod.GetAnnotations())
-		kubemapcoolJsonPatches = append(kubemapcoolJsonPatches, annotationPatch)
+		kubeIPJsonPatches = append(kubeIPJsonPatches, annotationPatch)
 	}
 
-	log.Info("patchPodChanges", "kubemapcoolJsonPatches", kubemapcoolJsonPatches)
-	if len(kubemapcoolJsonPatches) == 0 {
+	log.Info("patchPodChanges", "kubemapcoolJsonPatches", kubeIPJsonPatches)
+	if len(kubeIPJsonPatches) == 0 {
 		return admission.Response{
-			Patches: kubemapcoolJsonPatches,
+			Patches: kubeIPJsonPatches,
 			AdmissionResponse: admissionv1.AdmissionResponse{
 				Allowed: true,
 			},
 		}
 	}
 	return admission.Response{
-		Patches: kubemapcoolJsonPatches,
+		Patches: kubeIPJsonPatches,
 		AdmissionResponse: admissionv1.AdmissionResponse{
 			Allowed:   true,
 			PatchType: func() *admissionv1.PatchType { pt := admissionv1.PatchTypeJSONPatch; return &pt }(),
