@@ -82,14 +82,19 @@ vm根据网络信息，配置cloud-init
 
 ##   2.1 创建 deploy /stateful 指定注解
 
+```
 k8s.v1.cni.cncf.io/sriovnetworks: '[{"subnet": "100.100.100.0/24", "resourcename":"mecdev.com/intel2v2nics"}]'
+```
 
 ##   2.2 获取IP 以及 mac地址（数组）
 
+```
 k8s.v1.cni.cncf.io/sriovnetworks: '[{"subnet": "100.100.100.0/24", "resourcename":"mecdev.com/intel2v2nics", "ippool" : [{"name":"sriov-n3-static-100-100-100-100","ipaddress": "100.100.100.100","gateway":"100.100.100.1"}, {"name":"sriov-n3-static-100-100-100-200","ipaddress": "100.100.100.200", "gateway":"100.100.100.1"}]}]'
+```
 
 ##   2.3 创建 NRD
 
+```
 apiVersion: k8s.cni.cncf.io/v1
 
 kind: NetworkAttachmentDefinition
@@ -106,15 +111,18 @@ metadata:
 
 spec:
 
-  config: '{ "cniVersion":"0.3.1", "name":"sriov-n3-static-100-100-100-100","type":"sriov","vlan":0,"vlanQoS":0,"ipam":{"type":"static","addresses":[{"address":"100.100.100.100/24","gateway":"100.100.100.1"}],"dns":{"nameservers":["114.114.114.114"]}}
+  config: '{ "cniVersion":"0.3.1", "name":"sriov-n3-static-100-100-100-100","type":"sriov","vlan":0,"vlanQoS":0,"ipam":{"type":"static","addresses":[{"address":"100.100.100.100/24","gateway":"100.100.100.1"}],"dns":{"nameservers":["114.114.114.114"]}}}'
+```
 
-    }'
-
-##   2.4 pod使用 NRD
+### 2.4 pod使用 NRD
 
 为 pod 选择个未占用的 IP，添加注解到 pod
 
+```
 k8s.v1.cni.cncf.io/networks: '[{"name": "sriov-n3-static-100-100-100-100", "namespace":"sriov-network-operator"}]'
+```
+
+
 
 
 

@@ -12,11 +12,11 @@
 
 2、kubeipfixed的webhook pod 业务实现
 
-参考《轻量化底座固定sriov IP方案》
+参考《fixed-sriov-IP-solution》
 
 3、kubeipfixed的webhook vm业务实现
 
-参考《轻量化底座固定sriov IP方案》
+参考《fixed-sriov-IP-solution》
 
 4、kubeipfixed的测试用例编写
 
